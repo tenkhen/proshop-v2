@@ -13,13 +13,43 @@
 'type': 'modules'
 ```
 
-### Run server with scripts
+### Starting scripts
 
-#### Add following code in package.json
+#### Start normal server
 ```
 "scripts": {
   "start": "node backend/server.js"
 }
+```
+
+#### Start client - with prefix, it will go to frontend folder first and then start
+```
+"scripts": {
+  "client": "npm run dev --prefix frontend"
+}
+```
+
+#### For CRA (Create React App)
+```
+"scripts": {
+  "client": "npm start --prefix frontend"
+}
+```
+
+### Update server automatically when save file without need of restarting the server
+
+#### Install nodemon and concurrently as dev dependency
+
+`npm i nodemon concurrently --save-dev`
+
+#### Add following to package.json file
+```
+"server": "nodemon backend/server.js"
+```
+
+#### Run both server and client
+```
+"dev": "concurrently \"npm run server\" \"npm run client\""
 ```
 ---
 
@@ -38,7 +68,7 @@ const port = 5000;
 const app = express();
 ```
 
-### Create express route
+### Create express main route
 
 ```
 app.get('/', (req, res) => {
@@ -46,13 +76,13 @@ app.get('/', (req, res) => {
 });
 ```
 
-### Start the server app
+### Start the server
 
 ```
 app.listen(port, () => console.log(`Server running on port ${port}`));
 ```
 
-### Add all products API
+### Add all products API route
 
 #### Don't forget to add file extension (.js) when importing
 ```
@@ -63,11 +93,15 @@ app.get('/api/products', (req, res) => {
 });
 ```
 
-### Add single product API
+### Add single product API route
 ```
+import products from '../data/products.js';
+
 app.get('/api/product/:id', (req, res) => {
   const product = products.find(product => product._ip === req.params.id);
 
   res.json(product);
 });
 ```
+---
+

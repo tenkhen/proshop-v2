@@ -1,11 +1,20 @@
+import { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import products from '../products';
 import { Button, Card, Col, Image, ListGroup, Row } from 'react-bootstrap';
+import axios from 'axios';
 import Rating from '../ui/Rating';
 
-const ProductScreen = () => {
+const ProductPage = () => {
+  const [product, setProduct] = useState([]);
   const { id: productId } = useParams();
-  const product = products.find(p => p._id === productId);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const { data } = await axios.get(`/api/product/${productId}`);
+      setProduct(data);
+    };
+    fetchProducts();
+  }, [productId]);
 
   return (
     <>
@@ -71,4 +80,4 @@ const ProductScreen = () => {
   );
 };
 
-export default ProductScreen;
+export default ProductPage;
