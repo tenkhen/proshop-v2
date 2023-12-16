@@ -99,7 +99,6 @@ import products from '../data/products.js';
 
 app.get('/api/product/:id', (req, res) => {
   const product = products.find(product => product._ip === req.params.id);
-
   res.json(product);
 });
 ```
