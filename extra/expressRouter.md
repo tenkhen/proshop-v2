@@ -18,29 +18,16 @@ export default router
 
 ### Add all products API route
 
-#### Check asyncHandler.md
+#### Check controller.md
 ```
-import asyncHander from '../middleware/asyncHandler.js;
-import Product from '../models/productModel.js';
+import { getProducts, getProductById } from '../controllers/productController.js'
 
-router.get('/', asyncHandler(async (req, res) => {
-  <!-- passing empty object we will get all products -->
-  const products = await Product.find({});
-  res.json(products);
-}));
+router.route('/').get(getProducts);
 ```
 
 ### Add single product API route
 ```
-router.get('/:id', asyncHandler(async (req, res) => {
-  <!-- for single product, we use findById and pass params id -->
-  const product = await Product.findById(req.params.id);
-
-  if(product) res.json(product);
-
-  <!-- 404 - Not Found -->
-  res.status(404).json({ message: 'Product not found' })
-}));
+router.route('/:id').get(getProductById);
 ```
 
 ---
