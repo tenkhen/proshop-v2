@@ -18,5 +18,6 @@ module.exports = {
       { allowConstantExport: true },
     ],
     'react/prop-types': 'off',
+    'import/no-anonymous-default-export': 'off',
   },
 };
