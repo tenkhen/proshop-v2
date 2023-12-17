@@ -82,25 +82,3 @@ app.get('/', (req, res) => {
 app.listen(port, () => console.log(`Server running on port ${port}`));
 ```
 
-### Add all products API route
-
-#### Don't forget to add file extension (.js) when importing
-```
-import products from '../data/products.js';
-
-app.get('/api/products', (req, res) => {
-  res.json(products);
-});
-```
-
-### Add single product API route
-```
-import products from '../data/products.js';
-
-app.get('/api/product/:id', (req, res) => {
-  const product = products.find(product => product._ip === req.params.id);
-  res.json(product);
-});
-```
----
-

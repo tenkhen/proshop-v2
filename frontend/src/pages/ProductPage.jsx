@@ -10,7 +10,7 @@ const ProductPage = () => {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const { data } = await axios.get(`/api/product/${productId}`);
+      const { data } = await axios.get(`/api/products/${productId}`);
       setProduct(data);
     };
     fetchProducts();
