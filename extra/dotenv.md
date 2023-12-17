@@ -1,11 +1,14 @@
 # DOT ENV GUIDE
 
-### Install dotenv as dev dependency
+## Install dotenv as dev dependency
 `npm i dotenv --save-dev`
 
-### Create .env file on the root
+---
 
-### Importing env file
+## Create .env file on the root
+---
+
+## Importing env file
 
 #### Make sure to add dotenv.config() above where you use env
 ```

@@ -1,9 +1,11 @@
 # AXIOS GUIDE
 
-### Install Axios
+## Install Axios
 `npm i axios`
 
-### Fetching with Axios
+---
+
+## Fetching with Axios
 ```
 import { useEffect, useState } from 'react';
 import axios from 'axios';

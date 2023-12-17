@@ -19,6 +19,8 @@ export default defineConfig({
 });
 ```
 
+---
+
 ## Proxy for CRA
 
 ### Add proxy to package.json (frontend) 

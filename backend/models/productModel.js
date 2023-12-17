@@ -4,10 +4,10 @@ const reviewSchema = new mongoose.Schema(
   {
     // this user is who actually rates
     user: {
-      // ObjectId is special type of object from MongoDB
+      // ObjectId is special type of object from MongoDB. We need user id to relate a user to a product
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      // user is coming from collection called 'User' on MongoDB
+      // user is referencing to MongoDB
       ref: 'User',
     },
     // you could just use name: 'string' if you don't need another options in it

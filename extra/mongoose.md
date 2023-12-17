@@ -3,6 +3,8 @@
 ## Install Mongoose at root
 `npm i mongoose`
 
+---
+
 ## Connect to Database using Mongoose
 
 ### Create a folder called config in backend folder
@@ -47,10 +49,10 @@ const reviewSchema = new mongoose.Schema(
   {
     // this user is who actually rates
     user: {
-      // ObjectId is special type of object from MongoDB
+      // ObjectId is special type of object from MongoDB. This will relate user id to a product
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      // user is coming from collection called 'User' on MongoDB
+      // user is referencing to User on MongoDB
       ref: 'User',
     },
     // you could just use name: 'string' if you don't need another options in it
