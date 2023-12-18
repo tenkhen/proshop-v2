@@ -24,8 +24,8 @@ const cartSlice = createSlice({
       }
 
       // Calculate items price
-      state.itemsPrice = formatCurrency(
-        Number(
+      state.itemsPrice = Number(
+        formatCurrency(
           state.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0)
         )
       );
