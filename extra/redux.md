@@ -42,3 +42,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   </React.StrictMode>
 );
 ```
+
+---
+
+## Usage - Check slices.md
