@@ -46,3 +46,11 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 ---
 
 ## Usage - Check slices.md
+
+---
+
+## React useSelector function usage
+```
+// we can access state.cart globally, because we defined it in store.js
+const { cartItems } = useSelector(state => state.cart);
+```

@@ -105,3 +105,45 @@ const HomePage = () => {
 
 export default HomePage;
 ```
+
+## Creating cartSlice.js for adding and removing items from the cart
+```
+import { createSlice } from '@reduxjs/toolkit';
+// utility - here just update cart with prices etc
+import { updateCart } from '../utils/cartUtils';
+
+// check if there is cart in localStorage. If yes return it or return cartItems which is empty array
+const initialState = localStorage.getItem('cart')
+  ? JSON.parse(localStorage.getItem('cart'))
+  : { cartItems: [] };
+
+// here we use createSlice instead createApi, because here we don't need async/await etc
+const cartSlice = createSlice({
+  name: 'cart',
+  initialState,
+  reducers: {
+    // state is current value and action is the value it receives
+    addToCart: (state, action) => {
+      // in ProductPage.jsx we dispatch the payload by using redux useDispatch
+      const item = action.payload;
+
+      const existItem = state.cartItems.find(x => x._id === item._id);
+
+      if (existItem) {
+        state.cartItems = state.cartItems.map(x =>
+          x._id === existItem._id ? item : x
+        );
+      } else {
+        state.cartItems = [...state.cartItems, item];
+      }
+
+      return updateCart(state);
+    },
+  },
+});
+
+export const { addToCart } = cartSlice.actions;
+
+export default cartSlice.reducer;
+
+```

@@ -23,7 +23,7 @@ const cartSlice = createSlice({
         state.cartItems = [...state.cartItems, item];
       }
 
-      updateCart(state);
+      return updateCart(state);
     },
   },
 });
