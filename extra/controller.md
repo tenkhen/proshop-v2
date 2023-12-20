@@ -55,7 +55,11 @@ const authUser = asyncHandler(async (req, res) => {
   // check if password we passed matches to the password in user model
   // check in bcryptjs.md how to implement this matching password
   if (user && (await user.matchPassword(password))) {
-    res.json({
+
+    // check generateToken.js in util folder (backend)
+    generateToken(res, user._id);
+
+    res.status(200).json({
       _id: user._id,
       name: user.name,
       email: user.email,
@@ -72,21 +76,65 @@ const authUser = asyncHandler(async (req, res) => {
 // @route   POST /api/users/
 // @access  public
 const registerUser = asyncHandler(async (req, res) => {
-  res.send('register user');
+  const { name, email, password } = req.body;
+
+  const userExists = await User.findOne({ email });
+
+  if (userExists) {
+    // client error (400)
+    res.status(400);
+    throw new Error('User already exists');
+  }
+
+  const user = await User.create({
+    name,
+    email,
+    password,
+  });
+
+  if (user) {
+    generateToken(res, user._id);
+
+    res.status(200).json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      isAdmin: user.isAdmin,
+    });
+  } else {
+    res.status(400);
+    throw new Error('Invalid user data');
+  }
 });
 
 // @desc    Logout user / clear cookie
 // @route   POST /api/users/logout
 // @access  private
 const logoutUser = asyncHandler(async (req, res) => {
-  res.send('logout user');
+  res.clearCookie('jwt');
+
+  res.status(200).json({ message: 'Logged out successfully' });
 });
 
 // @desc    Get user profile
 // @route   GET /api/users/profile
 // @access  private
 const getUserProfile = asyncHandler(async (req, res) => {
-  res.send('get user profile');
+  // once we have authenticated, we have access to req.user
+  const user = await User.findById(req.user._id);
+
+  if (user) {
+    res.status(200).json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      isAdmin: user.isAdmin,
+    });
+  } else {
+    // not found
+    res.status(404);
+    throw new Error('User not found');
+  }
 });
 
 // @desc    Update user profile

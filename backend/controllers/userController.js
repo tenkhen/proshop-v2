@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import asyncHandler from '../middleware/asyncHandler.js';
 import User from '../models/userModel.js';
+import generateToken from '../utils/generateToken.js';
 
 // @desc    Auth user & get token
 // @route   POST /api/users/login
@@ -11,24 +12,10 @@ const authUser = asyncHandler(async (req, res) => {
   // get user based on email (check if the email we pass matches to the email in user model)
   const user = await User.findOne({ email });
 
-  // sign takes payload object, secret and options
-  const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-    expiresIn: '30d',
-  });
-
   if (user && (await user.matchPassword(password))) {
-    // cookie takes name, value and options
-    // we use name to read jwt from cookies - check authMiddleware.js
-    res.cookie('jwt', token, {
-      httpOnly: true,
-      // https
-      secure: process.env.NODE_ENV !== 'development',
-      // prevent attacks
-      sameSite: 'strict',
-      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
-    });
+    generateToken(res, user._id);
 
-    res.json({
+    res.status(200).json({
       _id: user._id,
       name: user.name,
       email: user.email,
@@ -45,21 +32,72 @@ const authUser = asyncHandler(async (req, res) => {
 // @route   POST /api/users/
 // @access  public
 const registerUser = asyncHandler(async (req, res) => {
-  res.send('register user');
+  const { name, email, password } = req.body;
+
+  const userExists = await User.findOne({ email });
+
+  if (userExists) {
+    // client error (400)
+    res.status(400);
+    throw new Error('User already exists');
+  }
+
+  const user = await User.create({
+    name,
+    email,
+    password,
+  });
+
+  if (user) {
+    generateToken(res, user._id);
+
+    res.status(200).json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      isAdmin: user.isAdmin,
+    });
+  } else {
+    res.status(400);
+    throw new Error('Invalid user data');
+  }
 });
 
 // @desc    Logout user / clear cookie
 // @route   POST /api/users/logout
 // @access  private
 const logoutUser = asyncHandler(async (req, res) => {
-  res.send('logout user');
+  // this is how we clear jwt cookie
+  res.clearCookie('jwt');
+
+  // we can also use following as well
+  // res.cookie('jwt', '', {
+  //   httpOnly: true,
+  //   expires: new Date(0),
+  // });
+
+  res.status(200).json({ message: 'Logged out successfully' });
 });
 
 // @desc    Get user profile
 // @route   GET /api/users/profile
 // @access  private
 const getUserProfile = asyncHandler(async (req, res) => {
-  res.send('get user profile');
+  // once we have authenticated, we have access to req.user
+  const user = await User.findById(req.user._id);
+
+  if (user) {
+    res.status(200).json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      isAdmin: user.isAdmin,
+    });
+  } else {
+    // not found
+    res.status(404);
+    throw new Error('User not found');
+  }
 });
 
 // @desc    Update user profile

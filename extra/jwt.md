@@ -82,3 +82,21 @@ const admin = (req, res, next) => {
 
 export { admin, protect };
 ```
+
+---
+
+## Clear cookie - Check logout function in userController.js
+
+```
+res.clearCookie('jwt');
+
+or
+
+// we simply set empty string to clear cookie
+res.cookie('jwt', '', {
+  httpOnly: true,
+  expires: new Date(0);
+});
+
+res.status(200).json({ message: 'Logged out successfully' })
+```
