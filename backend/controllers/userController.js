@@ -18,6 +18,7 @@ const authUser = asyncHandler(async (req, res) => {
 
   if (user && (await user.matchPassword(password))) {
     // cookie takes name, value and options
+    // we use name to read jwt from cookies - check authMiddleware.js
     res.cookie('jwt', token, {
       httpOnly: true,
       // https

@@ -21,11 +21,11 @@ const token = jwt.sign({ userId: user._id}, process.env.JWT_SECRET, {
 } )
 ```
 
-
 ### Set JWT as HTTP-ONLY cookie - The safer way to implement
 ```
 // following we don't need to send manually, it will automatically send every time we hit this specific route (/login)
 // cookie takes name, value and options
+// we use name to read jwt from cookies - check following Authorize using token section
 res.cookie('jwt', token, {
   httpOnly: true,
   // we set this false for development, but in production we need this true for https

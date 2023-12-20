@@ -1,12 +1,12 @@
 import jwt from 'jsonwebtoken';
-import asyncHander from './asyncHandler';
-import User from '../models/userModel';
+import asyncHander from './asyncHandler.js';
+import User from '../models/userModel.js';
 
 // Protect middleware
 const protect = asyncHander(async (req, res, next) => {
   let token;
 
-  // read the JWT from the cookie. jwt is the name we gave in userController (req.cookie('jwt'))
+  // read the JWT from the cookies. jwt is the name we gave in userController (req.cookie('jwt'))
   token = req.cookies.jwt;
 
   if (token) {
