@@ -21,3 +21,17 @@ const users = [
 
 export default users;
 ```
+
+---
+
+## Decrypt the password (e.g. in userModel.js we will decrypt password compare it)
+```
+import bcrypt from 'bcryptjs'
+
+// compare plain text password with decrypted password
+// here we add method called matchPassword to userSchema. So it will be accessible in userController
+// use regular function here. Arrow function doesn't work here somehow
+userSchema.methods.matchPassword = async function (enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password);
+};
+```

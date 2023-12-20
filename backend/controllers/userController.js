@@ -1,45 +1,4 @@
-# CONTROLLER GUIDE - Controller functions for routes
-
-### Create a folder called controllers in backend, create a controller file (e.g. productController.js)
-
-### Add following code in it (just for example)
-
-#### Check asyncHandler.md
-```
-import asyncHandler from '../middleware/asyncHandler.js';
-import Product from '../models/productModel.js';
-
-// @desc    Fetch all products
-// @route   GET /api/products
-// @access  public
-const getProducts = asyncHandler(async(req, res) => {
-  <!-- passing empty object we will get all products -->
-  const products = await Product.find({});
-  res.json(products);
-})
-
-// @desc    Fetch a single product
-// @route   GET /api/products/:id
-// @access  public
-const getProductById = asyncHandler(async(req, res) => {
-  <!-- for single product, we use findById and pass id we get from params -->
-  const product = await Product.findById(res.params.id)
-
-  if(product) {
-    res.json(product);
-  } else {
-    <!-- 404 - Not Found -->
-    res.status(404);
-    <!-- we are handling this error. Check errorMiddleware.md -->
-    throw new Error('Resource not found');
-  }
-})
-```
-
----
-
-### User conroller
-```
+import jwt from 'jsonwebtoken';
 import asyncHandler from '../middleware/asyncHandler.js';
 import User from '../models/userModel.js';
 
@@ -52,9 +11,22 @@ const authUser = asyncHandler(async (req, res) => {
   // get user based on email (check if the email we pass matches to the email in user model)
   const user = await User.findOne({ email });
 
-  // check if password we passed matches to the password in user model
-  // check in bcryptjs.md how to implement this matching password
+  // sign takes payload object, secret and options
+  const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+    expiresIn: '30d',
+  });
+
   if (user && (await user.matchPassword(password))) {
+    // cookie takes name, value and options
+    res.cookie('jwt', token, {
+      httpOnly: true,
+      // https
+      secure: process.env.NODE_ENV !== 'development',
+      // prevent attacks
+      sameSite: 'strict',
+      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+    });
+
     res.json({
       _id: user._id,
       name: user.name,
@@ -135,11 +107,3 @@ export {
   deleteUser,
   updateUser,
 };
-
-```
-
-### Parse body - In order to get data from 'req', we need to parse body. Add following code in server.js
-```
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-```
