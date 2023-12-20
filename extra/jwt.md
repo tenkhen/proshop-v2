@@ -5,10 +5,10 @@
 
 ---
 
-## Usage example - Check in userController.js
+## Usage example - Check userController.js
 
 ### Creating token
-`
+```
 import jwt from 'jsonwebtoken'
 
 const { email } = req.body;
@@ -19,7 +19,8 @@ const token = jwt.sign({ userId: user._id}, process.env.JWT_SECRET, {
   // 30 days
   expiresIn: '30d'
 } )
-`
+```
+
 
 ### Set JWT as HTTP-ONLY cookie - The safer way to implement
 ```
