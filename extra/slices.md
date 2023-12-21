@@ -27,6 +27,8 @@ export const apiSlice = createApi({
 ## Inject endpoints to above apiSlice (parent) which we left empty object
 
 ### Create endpoint file (e.g. productsApiSlice.js) in slices folder and inject endpoints as follows
+
+#### All API slices are dealing with the server
 ```
 <!-- import { PRODUCTS_URL } from '../constants'; // we hard-code until we fixed the .env issue -->
 import { apiSlice } from './apiSlice';
@@ -57,6 +59,37 @@ getSingleProduct: builder.query({
   }),
   keepUnusedDataFor: 5,
 }),
+```
+
+## usersApiSlice
+```
+import { USERS_URL } from '../constants';
+import { apiSlice } from './apiSlice';
+
+// we are injecting individual endpoints instead adding all endpoints in apiSlice.js
+export const usersApiSlice = apiSlice.injectEndpoints({
+  endpoints: builder => ({
+    // as we are using post request to server, we use mutation. For get, we can use query
+    login: builder.mutation({
+      // we sent data (email and password)
+      query: data => ({
+        url: `${USERS_URL}/auth`,
+        method: 'POST',
+        body: data,
+      }),
+    }),
+    logout: builder.mutation({
+      query: () => ({
+        url: `${USERS_URL}/logout`,
+        method: 'POST',
+      }),
+    }),
+  }),
+});
+
+// export login with this convention. 'use' in front and 'mutation' at the end as it's mutation
+export const { useLoginMutation, useLogoutMutation } = usersApiSlice;
+
 ```
 
 ---
@@ -146,4 +179,40 @@ export const { addToCart } = cartSlice.actions;
 
 export default cartSlice.reducer;
 
+```
+
+### Authentication slice
+#### This is for local (frontend)
+```
+import { createSlice } from '@reduxjs/toolkit';
+
+const initialState = {
+  userInfo: localStorage.getItem('userInfo')
+    ? JSON.parse(localStorage.getItem('userInfo'))
+    : null,
+};
+
+const authSlice = createSlice({
+  name: 'auth',
+  initialState,
+  reducers: {
+    setCredentials: (state, action) => {
+      // we are setting two things, state and localStorage
+      // state is from redux which can be accessed globally
+      state.userInfo = action.payload;
+      // this is dealing with localStorage
+      localStorage.setItem('userInfo', JSON.stringify(action.payload));
+      console.log(state);
+    },
+    logout: state => {
+      // for logging out, we need to first set userInfo in state to null and then remove userInfo from localStorage
+      state.userInfo = null;
+      localStorage.removeItem('userInfo');
+    },
+  },
+});
+
+export const { setCredentials } = authSlice.actions;
+
+export default authSlice.reducer;
 ```

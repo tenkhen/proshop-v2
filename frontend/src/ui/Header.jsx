@@ -1,16 +1,33 @@
 import { Navbar, Nav, Container, Badge, NavDropdown } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
-import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import { FaShoppingCart, FaUser } from 'react-icons/fa';
 import logo from '../assets/logo.png';
+import { useLogoutMutation } from '../slices/usersApiSlice';
+import { logout } from '../slices/authSlice';
+import toast from 'react-hot-toast';
 
 const Header = () => {
   // this cart is coming from store where we stored cart
   const { cartItems } = useSelector(state => state.cart);
   const { userInfo } = useSelector(state => state.auth);
+  const [logoutApi, { isLoading }] = useLogoutMutation();
 
-  const logoutHandler = () => {
-    console.log('logout');
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const logoutHandler = async () => {
+    try {
+      // actually logging out for server
+      await logoutApi().unwrap();
+      // logout for local (frontend) e.g. clearing localStorage and state
+      dispatch(logout());
+      navigate('/');
+      toast.success('Logout Successfully');
+    } catch (error) {
+      throw new Error(error?.data?.message || error?.error);
+    }
   };
 
   return (
@@ -42,7 +59,9 @@ const Header = () => {
                   <LinkContainer to="/profile">
                     <NavDropdown.Item>Profile</NavDropdown.Item>
                   </LinkContainer>
-                  <NavDropdown.Item onClick={logoutHandler}>
+                  <NavDropdown.Item
+                    onClick={logoutHandler}
+                    disabled={isLoading}>
                     Logout
                   </NavDropdown.Item>
                 </NavDropdown>
