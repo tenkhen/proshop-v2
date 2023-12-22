@@ -10,9 +10,9 @@ const HomePage = () => {
   return (
     <>
       {isLoading ? (
-        <h2>
+        <h1>
           <Loader />
-        </h2>
+        </h1>
       ) : error ? (
         <Message variant="danger">
           {error?.data?.message || error?.error}

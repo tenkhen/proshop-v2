@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import FormContainer from '../ui/FormContainer';
@@ -7,9 +7,7 @@ import { saveShippingAddress } from '../slices/cartSlice';
 import CheckoutSteps from '../ui/CheckoutSteps';
 
 const ShippingPage = () => {
-  const cart = useSelector(state => state.cart);
-  // grab shipping address from localStorage
-  const { shippingAddress } = cart;
+  const { cartItems, shippingAddress } = useSelector(state => state.cart);
 
   // if shipping address exists, fill up with shipping address or fill with empty string
   const [address, setAddress] = useState(shippingAddress?.address || '');
@@ -22,6 +20,12 @@ const ShippingPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (cartItems.length === 0) {
+      navigate('/');
+    }
+  }, [cartItems, navigate]);
+
   const submitHandler = e => {
     e.preventDefault();
 
@@ -32,7 +36,7 @@ const ShippingPage = () => {
   return (
     <FormContainer>
       <CheckoutSteps step1 step2 />
-      <h2>Shipping</h2>
+      <h1>Shipping</h1>
 
       <Form onSubmit={submitHandler}>
         <Form.Group controlId="address" className="mt-3">
