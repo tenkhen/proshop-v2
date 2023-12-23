@@ -20,7 +20,6 @@ const PlaceOrderPage = () => {
   useEffect(() => {
     if (!cart.shippingAddress.address) navigate('/shipping');
     if (!cart.paymentMethod) navigate('/payment');
-    if (cart.cartItems.length === 0) navigate('/');
   }, [
     cart.shippingAddress.address,
     cart.paymentMethod,
