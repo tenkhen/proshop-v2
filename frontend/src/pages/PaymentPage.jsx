@@ -15,8 +15,7 @@ const PaymentPage = () => {
   const { shippingAddress } = useSelector(state => state.cart);
 
   useEffect(() => {
-    // check if object is empty
-    if (Object.keys(shippingAddress).length === 0) {
+    if (!shippingAddress.address) {
       navigate('/shipping');
     }
   }, [shippingAddress, navigate]);

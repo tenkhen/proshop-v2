@@ -1,6 +1,8 @@
 import { formatCurrency } from '../utils/helpers';
 
 export const updateCart = state => {
+  if (state?.cartItems.length === 0) return localStorage.removeItem('cart');
+
   // Calculate items price
   state.itemsPrice = Number(
     formatCurrency(

@@ -5,6 +5,7 @@ import FormContainer from '../ui/FormContainer';
 import { Form, Button } from 'react-bootstrap';
 import { saveShippingAddress } from '../slices/cartSlice';
 import CheckoutSteps from '../ui/CheckoutSteps';
+import toast from 'react-hot-toast';
 
 const ShippingPage = () => {
   const { cartItems, shippingAddress } = useSelector(state => state.cart);
@@ -28,6 +29,10 @@ const ShippingPage = () => {
 
   const submitHandler = e => {
     e.preventDefault();
+
+    if (!address || !city || !postalCode || !country) {
+      return toast.error('Fill all details');
+    }
 
     dispatch(saveShippingAddress({ address, city, postalCode, country }));
     navigate('/payment');
