@@ -11,7 +11,7 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     setCredentials: (state, action) => {
-      // we are setting to two things, state and localStorage
+      // we are setting payload to two things, state and localStorage
       // state is from redux which can be accessed globally
       state.userInfo = action.payload;
       // this is dealing with localStorage
