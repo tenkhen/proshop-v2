@@ -1,14 +1,32 @@
 import { LinkContainer } from 'react-router-bootstrap';
 import { Table, Button, Row, Col } from 'react-bootstrap';
 import { FaTimes, FaEdit, FaTrash } from 'react-icons/fa';
+import toast from 'react-hot-toast';
 import Message from '../ui/Message';
 import Loader from '../ui/Loader';
-import { useGetProductsQuery } from '../slices/productApiSlice';
+import {
+  useGetProductsQuery,
+  useCreateProductMutation,
+} from '../slices/productApiSlice';
 
 const ProductListPage = () => {
-  const { data: products, isloading, error } = useGetProductsQuery();
+  const { data: products, isLoading, error, refetch } = useGetProductsQuery();
+  // this createProduct function is coming from backend productController.js
+  const [createProduct, { isLoading: loadingCreate }] =
+    useCreateProductMutation();
 
-  if (!products) return <Loader />;
+  if (isLoading || loadingCreate) return <Loader />;
+
+  const createProductHandler = async () => {
+    if (window.confirm('Are you sure you want to create a new product?')) {
+      try {
+        await createProduct();
+        refetch();
+      } catch (error) {
+        toast.error(error?.data?.message || error?.error);
+      }
+    }
+  };
 
   const deleteHandler = productId => {
     console.log(productId);
@@ -21,13 +39,13 @@ const ProductListPage = () => {
           <h1>Products</h1>
         </Col>
         <Col className="text-end">
-          <Button className="btn-sm m-3">
+          <Button className="btn-sm m-3" onClick={createProductHandler}>
             <FaEdit /> Create Product
           </Button>
         </Col>
       </Row>
 
-      {isloading ? (
+      {isLoading ? (
         <Loader />
       ) : error ? (
         <Message variant="danger">{error}</Message>
