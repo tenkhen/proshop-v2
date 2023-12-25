@@ -8,9 +8,10 @@ import toast from 'react-hot-toast';
 import {
   useGetProductDetailsQuery,
   useUpdateProductMutation,
+  useUploadProductImageMutation,
 } from '../slices/productApiSlice';
 
-const ProductUpdateScreen = () => {
+const ProductUpdatePage = () => {
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [image, setImage] = useState('');
@@ -31,6 +32,8 @@ const ProductUpdateScreen = () => {
 
   const [updateProduct, { isLoading: loadingUpdate }] =
     useUpdateProductMutation();
+
+  const [uploadProductImage] = useUploadProductImageMutation();
 
   useEffect(() => {
     refetch();
@@ -71,6 +74,21 @@ const ProductUpdateScreen = () => {
     navigate('/admin/productlist');
   };
 
+  const uploadFileHandler = async e => {
+    console.log(e.target.files[0]);
+
+    // const formData = new FormData();
+    // formData.append('image', e.target.files[0]);
+
+    // try {
+    //   const res = await uploadProductImage(formData).unwrap();
+    //   toast.success(res.message);
+    //   setImage(res.image);
+    // } catch (error) {
+    //   toast.error(error?.data?.message || error?.error);
+    // }
+  };
+
   return (
     <>
       <Link to="/admin/productlist" className="btn btn-light my-3">
@@ -97,7 +115,20 @@ const ProductUpdateScreen = () => {
               onChange={e => setPrice(e.target.value)}
             />
           </Form.Group>
-          {/* Image input place holder */}
+          <Form.Group controlId="image" className="my-2">
+            <Form.Label>Image</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter image url"
+              value={image}
+              onChange={e => setImage(e.target.value)}
+            />
+            <Form.Control
+              type="file"
+              label="Choose file"
+              onChange={uploadFileHandler}
+            />
+          </Form.Group>
           <Form.Group controlId="brand" className="mt-3">
             <Form.Label>Brand</Form.Label>
             <Form.Control
@@ -143,4 +174,4 @@ const ProductUpdateScreen = () => {
   );
 };
 
-export default ProductUpdateScreen;
+export default ProductUpdatePage;
