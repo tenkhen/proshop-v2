@@ -1,12 +1,13 @@
 import { LinkContainer } from 'react-router-bootstrap';
 import { Table, Button, Row, Col } from 'react-bootstrap';
-import { FaTimes, FaEdit, FaTrash } from 'react-icons/fa';
+import { FaEdit, FaTrash } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 import Message from '../ui/Message';
 import Loader from '../ui/Loader';
 import {
   useGetProductsQuery,
   useCreateProductMutation,
+  useDeleteProductMutation,
 } from '../slices/productApiSlice';
 
 const ProductListPage = () => {
@@ -15,7 +16,10 @@ const ProductListPage = () => {
   const [createProduct, { isLoading: loadingCreate }] =
     useCreateProductMutation();
 
-  if (isLoading || loadingCreate) return <Loader />;
+  const [deleteProduct, { isLoading: loadingDelete }] =
+    useDeleteProductMutation();
+
+  if (isLoading || loadingCreate || loadingDelete) return <Loader />;
 
   const createProductHandler = async () => {
     if (window.confirm('Are you sure you want to create a new product?')) {
@@ -28,8 +32,16 @@ const ProductListPage = () => {
     }
   };
 
-  const deleteHandler = productId => {
-    console.log(productId);
+  const deleteHandler = async productId => {
+    if (window.confirm('Are you sure?')) {
+      try {
+        await deleteProduct(productId);
+        toast.success('Product deleted');
+        refetch();
+      } catch (error) {
+        toast.error(error?.data?.message || error?.error);
+      }
+    }
   };
 
   return (

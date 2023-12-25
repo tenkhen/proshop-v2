@@ -69,10 +69,64 @@ app.use('/api/upload', uploadRoutes);
 
 ---
 
-## Make the uploads folder static to make it accessible
+## Make the uploads folder static to make it accessible - server.js
 ```
 import path from 'path';
 
 const __dirname = path.resolve(); // set __dirname to current directory
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
+```
+
+---
+
+## Adding api slices for frontend - productsApiSlice.js
+```
+<!-- UPLOAD_URL (/api/upload/) -->
+uploadProductImage: builder.mutation({
+  query: (data) => ({
+    url: `${UPLOAD_URL}`,
+    method: 'POST',
+    body: data,
+  }),
+})
+
+export const { useUploadProductImageMutation } = productsApiSlice;
+```
+
+---
+
+## Adding image upload in page - ProductUpdatePage.jsx
+```
+import { useUploadProductImageMutation } from '../slices/productApiSlice';
+
+const [uploadProductImage, { isLoading: loadingUpload }] = useUploadProductImageMutation();
+
+<!-- handler function -->
+const uploadFileHandler = async e => {
+  const formData = new FormData();
+  formData.append('image', e.target.files[0]);
+  try {
+    const res = await uploadProductImage(formData).unwrap();
+    toast.success(res.message);
+    setImage(res.image);
+  } catch (error) {
+    toast.error(error?.data?.message || error?.error);
+  }
+};
+
+<!-- in output return -->
+<Form.Group controlId="image" className="my-2">
+  <Form.Label>Image</Form.Label>
+  <Form.Control
+    type="text"
+    placeholder="Enter image url"
+    value={image}
+    onChange={e => setImage}
+  />
+  <Form.Control
+    type="file"
+    label="Choose file"
+    onChange={uploadFileHandler}
+  />
+</Form.Group>
 ```
