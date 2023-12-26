@@ -183,6 +183,7 @@ const deleteUser = asyncHandler(async (req, res) => {
 // @access  private / admin
 const updateUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id);
+  const [rootAdmin] = await User.find({ email: 'admin@email.com' });
 
   if (!user) {
     res.status(404);
@@ -191,7 +192,9 @@ const updateUser = asyncHandler(async (req, res) => {
 
   user.name = req.body.name || user.name;
   user.email = req.body.email || user.email;
-  user.isAdmin = Boolean(req.body.isAdmin) || user.isAdmin;
+  user.isAdmin = user._id.equals(rootAdmin._id.toString())
+    ? user.isAdmin
+    : Boolean(req.body.isAdmin);
 
   const updatedUser = await user.save();
 
