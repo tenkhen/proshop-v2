@@ -41,6 +41,7 @@ const UserUpdatePage = () => {
   const submitHandler = async e => {
     e.preventDefault();
     try {
+      // avoid changing root admin's isAdmin
       if (email === 'admin@email.com' && isAdmin === false) {
         return toast.error('Root admin isAdmin cannot be changed');
       }
