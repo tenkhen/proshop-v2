@@ -4,14 +4,19 @@ import { FaEdit, FaTrash } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 import Message from '../ui/Message';
 import Loader from '../ui/Loader';
+import Paginate from '../ui/Paginate';
 import {
   useGetProductsQuery,
   useCreateProductMutation,
   useDeleteProductMutation,
 } from '../slices/productApiSlice';
+import { useParams } from 'react-router-dom';
 
 const ProductListPage = () => {
-  const { data: products, isLoading, error, refetch } = useGetProductsQuery();
+  const { pageNumber } = useParams();
+  const { data, isLoading, error, refetch } = useGetProductsQuery({
+    pageNumber,
+  });
   // this createProduct function is coming from backend productController.js
   const [createProduct, { isLoading: loadingCreate }] =
     useCreateProductMutation();
@@ -75,7 +80,7 @@ const ProductListPage = () => {
               </tr>
             </thead>
             <tbody>
-              {products.map(product => (
+              {data.products.map(product => (
                 <tr key={product._id}>
                   <td>{product._id}</td>
                   <td>{product.name}</td>
@@ -99,6 +104,7 @@ const ProductListPage = () => {
               ))}
             </tbody>
           </Table>
+          <Paginate pages={data.pages} page={data.page} isAdmin={true} />
         </>
       )}
     </>
