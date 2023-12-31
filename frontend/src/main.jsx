@@ -12,6 +12,7 @@ import store from './store.js';
 import './assets/styles/bootstrap.custom.css';
 import './assets/styles/index.css';
 import { Toaster } from 'react-hot-toast';
+import { HelmetProvider } from 'react-helmet-async';
 import App from './App.jsx';
 import HomePage from './pages/HomePage.jsx';
 import ProductPage from './pages/ProductPage.jsx';
@@ -70,12 +71,14 @@ const router = createBrowserRouter(
 );
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <PayPalScriptProvider deferLoading={true}>
-        <RouterProvider router={router} />
-      </PayPalScriptProvider>
-      <Toaster />
-    </Provider>
-  </React.StrictMode>
+  <HelmetProvider>
+    <React.StrictMode>
+      <Provider store={store}>
+        <PayPalScriptProvider deferLoading={true}>
+          <RouterProvider router={router} />
+        </PayPalScriptProvider>
+        <Toaster />
+      </Provider>
+    </React.StrictMode>
+  </HelmetProvider>
 );

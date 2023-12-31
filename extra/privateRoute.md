@@ -1,7 +1,7 @@
 # PRIVATE ROUTE GUIDE - Some routes can only be accessed with conditions
 
 ## Check if userInfo in state, if yes then allow to access route other wise return to /login
-```
+```js
 import { useSelector } from 'react-redux';
 import { Outlet, Navigate } from 'react-router-dom';
 
@@ -15,7 +15,7 @@ export default PrivateRoute;
 ```
 
 ## Usage
-```
+```js
 <Route path="/" element={<App />}>
   <Route index={true} path="/" element={<HomePage />} />
   <Route path="/products/:id" element={<ProductPage />} />

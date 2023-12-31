@@ -11,11 +11,11 @@
 ## Importing env file
 
 #### Make sure to add dotenv.config() above where you use env
-```
+```js
 import dotenv from 'dotenv';
 dotenv.config();
 
-<!-- for example -->
+// for example
 const port = process.env.PORT; 
 ```
 
@@ -25,10 +25,10 @@ const port = process.env.PORT;
 
 ### In this case you need to create separate .env.local in frontend folder
 <!-- don't forget to add VITE_ prefix -->
-```
-<!-- in .env.local -->
+```js
+// in .env.local
 VITE_URL=http://localhost:3000
 
-<!-- where you are importing -->
+// where you are importing
 import.meta.env.VITE_URL
 ```

@@ -11,7 +11,7 @@
 
 ### Create a file called db.js in config folder and add following codes in it
 #### We use async/await here because data returned from MongoDB will be a promise
-```
+```js
 import mongoose from 'mongoose';
 
 const connectDB = async () => {
@@ -27,7 +27,7 @@ export default connectDB;
 ```
 
 ### Call this function (connectDB) in server.js right above 'const app = express();'
-```
+```js
 import connectDB from './config/db.js';
 
 connectDB();
@@ -42,7 +42,7 @@ connectDB();
 1. Create folder called models in backend
 2. Create model file (e.g. productModel.js)
 3. Add following codes in it
-```
+```js
 import mongoose from 'mongoose';
 
 const reviewSchema = new mongoose.Schema(

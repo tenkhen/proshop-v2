@@ -8,7 +8,7 @@
 ## Usage example - Check userController.js
 
 ### Creating token
-```
+```js
 import jwt from 'jsonwebtoken'
 
 const { email } = req.body;
@@ -22,7 +22,7 @@ const token = jwt.sign({ userId: user._id}, process.env.JWT_SECRET, {
 ```
 
 ### Set JWT as HTTP-ONLY cookie - The safer way to implement
-```
+```js
 // following we don't need to send manually, it will automatically send every time we hit this specific route (/login)
 // cookie takes name, value and options
 // we use name to read jwt from cookies - check following Authorize using token section
@@ -40,7 +40,7 @@ res.cookie('jwt', token, {
 ---
 
 ## Authorize using token - We added following code authMiddle.js
-```
+```js
 import jwt from 'jsonwebtoken';
 import asyncHander from './asyncHandler';
 import User from '../models/userModel';
@@ -87,12 +87,10 @@ export { admin, protect };
 
 ## Clear cookie - Check logout function in userController.js
 
-```
+```js
 res.clearCookie('jwt');
 
-or
-
-// we simply set empty string to clear cookie
+// or we simply set empty string to clear cookie
 res.cookie('jwt', '', {
   httpOnly: true,
   expires: new Date(0);

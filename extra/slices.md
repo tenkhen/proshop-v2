@@ -3,7 +3,7 @@
 ## Create folder called slices in src (frontend) create slice file (e.g. apiSlice.js)
 
 ### Add following code in it
-```
+```js
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const baseQuery = fetchBaseQuery();
@@ -29,30 +29,30 @@ export const apiSlice = createApi({
 ### Create endpoint file (e.g. productsApiSlice.js) in slices folder and inject endpoints as follows
 
 #### All API slices are dealing with the server
-```
-<!-- import { PRODUCTS_URL } from '../constants'; // we hard-code until we fixed the .env issue -->
+```js
+// import { PRODUCTS_URL } from '../constants'; // we hard-code until we fixed the .env issue
 import { apiSlice } from './apiSlice';
 
-<!-- we are injecting individual endpoints instead adding all endpoints in apiSlice.js -->
+// we are injecting individual endpoints instead adding all endpoints in apiSlice.js
 export const productsApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
     getProducts: builder.query({
       query: () => ({
         url: '/api/products',
       }),
-      <!-- keep query in cache for reuse. In seconds -->
+      // keep query in cache for reuse. In seconds
       keepUnusedDataFor: 5,
     }),
   }),
 });
 
-<!-- export getProducts with this convention. 'use' in front and 'Query' at the end -->
+// export getProducts with this convention. 'use' in front and 'Query' at the end
 export const { useGetProductsQuery } = productsApiSlice;
 
 ```
 
 ### For single product add following right after getProducts as follows and export as convention
-```
+```js
 getSingleProduct: builder.query({
   query: (productId) => ({
     url: `/api/products/${productId}`,
@@ -62,7 +62,7 @@ getSingleProduct: builder.query({
 ```
 
 ## usersApiSlice
-```
+```js
 import { USERS_URL } from '../constants';
 import { apiSlice } from './apiSlice';
 
@@ -97,19 +97,19 @@ export const { useLoginMutation, useLogoutMutation } = usersApiSlice;
 ## Using slices - Use in e.g. HomeScreen.jsx as follows
 
 ### DON'T FORGET TO ADD THIS LINE OF CODE WHEN USE IT BECAUSE FETCHING TAKES TIME
-```
+```js
 if(!products) return;
 ```
 
-```
+```js
 import { Row, Col } from 'react-bootstrap';
 import Product from '../ui/Product';
 
-<!-- import -->
+// import
 import { useGetProductsQuery } from '../slices/productApiSlice';
 
 const HomePage = () => {
-  <!-- destructure -->
+  // destructure
   const { data: products, isLoading, error } = useGetProductsQuery();
 
   if(!product) return;
@@ -140,7 +140,7 @@ export default HomePage;
 ```
 
 ## Creating cartSlice.js for adding and removing items from the cart
-```
+```js
 import { createSlice } from '@reduxjs/toolkit';
 // utility - here just update cart with prices etc
 import { updateCart } from '../utils/cartUtils';
@@ -183,7 +183,7 @@ export default cartSlice.reducer;
 
 ### Authentication slice
 #### This is for local (frontend)
-```
+```js
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {

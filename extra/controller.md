@@ -5,7 +5,7 @@
 ### Add following code in it (just for example)
 
 #### Check asyncHandler.md
-```
+```js
 import asyncHandler from '../middleware/asyncHandler.js';
 import Product from '../models/productModel.js';
 
@@ -39,7 +39,7 @@ const getProductById = asyncHandler(async(req, res) => {
 ---
 
 ### User conroller
-```
+```js
 import asyncHandler from '../middleware/asyncHandler.js';
 import User from '../models/userModel.js';
 
@@ -210,7 +210,7 @@ export {
 ```
 
 ### Parse body - In order to get data from 'req', we need to parse body. Add following code in server.js
-```
+```js
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 ```

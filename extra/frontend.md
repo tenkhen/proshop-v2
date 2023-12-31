@@ -5,7 +5,7 @@
 ### Add proxy to vite.config.js
 
 #### Whenever fetch request hits /api, it recognizes the url should be a localhost:5000
-```
+```js
 export default defineConfig({
   plugins: [react(), eslint()],
   server: {
@@ -26,7 +26,7 @@ export default defineConfig({
 ### Add proxy to package.json (frontend) 
 
 #### Whenever fetch request hits /api, it recognizes the url should be a localhost:5000
-```
+```js
 "proxy": "http://localhost:5000"
 ```
 ---

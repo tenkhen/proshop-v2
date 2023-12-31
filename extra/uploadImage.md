@@ -6,19 +6,19 @@
 ---
 
 ## Create route file called uploadRoutes.js in routes folder (backend) and add following codes
-```
+```js
 import path from 'path';
 import express from 'express';
 import multer from 'multer';
 
 const router = express.Router();
 
-<!-- as we are saving file to our server, we use diskStorage. -->
+// as we are saving file to our server, we use diskStorage
 const storage = multer.diskStorage({
-  <!-- cb is callback function -->
+  // cb is callback function
   destination(req, file, cb) {
-    <!-- we can replace error with null if we have one -->
-    <!-- create a folder called upload in the root -->
+    // we can replace error with null if we have one
+    // create a folder called upload in the root
     cb(null, 'upload/');
   },
   filename(req, file, cb) {
@@ -41,7 +41,7 @@ function fileFilter(req, file, cb) {
 }
 
 const upload = multer({ storage, fileFilter });
-<!-- This 'image' is the fieldname we used up there -->
+// This 'image' is the fieldname we used up there
 const uploadSingleImage = upload.single('image');
 
 router.post('/', (req, res) => {
@@ -63,14 +63,14 @@ export default router;
 ---
 
 ## Add routes to server.js
-```
+```js
 app.use('/api/upload', uploadRoutes);
 ```
 
 ---
 
 ## Make the uploads folder static to make it accessible - server.js
-```
+```js
 import path from 'path';
 
 const __dirname = path.resolve(); // set __dirname to current directory
@@ -80,8 +80,8 @@ app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 ---
 
 ## Adding api slices for frontend - productsApiSlice.js
-```
-<!-- UPLOAD_URL (/api/upload/) -->
+```js
+// UPLOAD_URL (/api/upload/)
 uploadProductImage: builder.mutation({
   query: (data) => ({
     url: `${UPLOAD_URL}`,
@@ -96,12 +96,12 @@ export const { useUploadProductImageMutation } = productsApiSlice;
 ---
 
 ## Adding image upload in page - ProductUpdatePage.jsx
-```
+```js
 import { useUploadProductImageMutation } from '../slices/productApiSlice';
 
 const [uploadProductImage, { isLoading: loadingUpload }] = useUploadProductImageMutation();
 
-<!-- handler function -->
+// handler function
 const uploadFileHandler = async e => {
   const formData = new FormData();
   formData.append('image', e.target.files[0]);
@@ -114,7 +114,7 @@ const uploadFileHandler = async e => {
   }
 };
 
-<!-- in output return -->
+// in output return
 <Form.Group controlId="image" className="my-2">
   <Form.Label>Image</Form.Label>
   <Form.Control

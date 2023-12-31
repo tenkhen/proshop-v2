@@ -7,7 +7,7 @@
 ## Create a file called asyncHandler.js and add following code in it
 
 ### asyncHandler takes a function with three arguments. Then resolve that function and go next. If there is an error, this function will catch it and go next
-```
+```js
 const asyncHandler = fn => (req, res, next) => {
   Promise.resolve(fn(req, res, next)).catch(next);
 }

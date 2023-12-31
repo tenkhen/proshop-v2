@@ -12,7 +12,7 @@
 ### Create a file called store.js in src folder and add following codes
 
 #### We add slice here - check slices.md
-```
+```js
 import { configureStore } from '@reduxjs/toolkit';
 import { apiSlice } from './slices/apiSlice';
 
@@ -30,7 +30,7 @@ export default store;
 ```
 
 ### Import Provider in main.jsx wrap the router as follows
-```
+```js
 import { Provider } from 'react-redux';
 import store from './store.js';
 
@@ -50,7 +50,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 ---
 
 ## React useSelector function usage
-```
+```js
 // we can access state.cart globally, because we defined it in store.js
 const { cartItems } = useSelector(state => state.cart);
 ```

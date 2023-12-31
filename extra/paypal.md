@@ -15,7 +15,7 @@
 
 ## Setting PayPal route in server.js
 
-```
+```js
 app.get('/api/config/paypal', (req, res) => {
   res.send({ clientId: process.env.PAYPAL_CLIENT_ID })
 })
@@ -29,7 +29,7 @@ app.get('/api/config/paypal', (req, res) => {
 --- 
 
 ## Wrap main route in PayPalScriptProvider
-```
+```js
 import { PayPalScriptProvider } from '@paypal/react-paypal-js';
 
 <PayPalScriptProvider deferLoading={true}>
@@ -40,7 +40,7 @@ import { PayPalScriptProvider } from '@paypal/react-paypal-js';
 ---
 
 ## Add payOrder mutation and getPayPalClientId query in ordersApiSlice.js
-```
+```js
 payOrder: builder.mutation({
   query: ({orderId, details}) => ({
     url: `${ORDERS_URL}/${orderId}/pay`,
@@ -59,7 +59,7 @@ export const { usePayOrderMutation, useGetPayPalClientIdQuery } = ordersApiSlice
 ```
 
 ## Using React PayPal in OrderPage.js
-```
+```js
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
 import {
   useGetOrderDetailsQuery,

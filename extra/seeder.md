@@ -5,7 +5,7 @@
 ## Add following codes in seeder.js
 
 ### If you importing js file, DON'T forget to add js. This is needed for ES module import
-```
+```js
 import dotenv from 'dotenv';
 import colors from 'colors';
 import users from './data/users.js';
@@ -79,7 +79,7 @@ if (process.argv[2] === '-d') {
 ## Create script to run seeder.js
 
 ### Add following code to package.json (root) under scripts
-```
+```js
 "data:import": "node backend/seeder.js",
 "data:destroy": "node backend/seeder.js -d",
 ```

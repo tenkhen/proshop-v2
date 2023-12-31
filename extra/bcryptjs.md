@@ -6,7 +6,7 @@
 ---
 
 ## Use bcrypt to encrypt a password as follows
-```
+```js
 import bcrypt from 'bcryptjs';
 
 const users = [
@@ -25,7 +25,7 @@ export default users;
 ---
 
 ## Decrypt the password (e.g. in userModel.js we will decrypt password compare it)
-```
+```js
 import bcrypt from 'bcryptjs'
 
 // compare plain text password with decrypted password
@@ -37,7 +37,7 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
 ```
 
 ## Encrypt password before save it to database (registering new user)
-```
+```js
 // with 'pre', it will run before with action we choose (save). Here run before we save to user database
 userSchema.pre('save', async function (next) {
   // if we are not dealing with password then move on to next

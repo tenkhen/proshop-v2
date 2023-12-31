@@ -19,6 +19,7 @@ import {
 } from '../slices/productApiSlice';
 import Loader from '../ui/Loader';
 import Message from '../ui/Message';
+import Meta from '../ui/Meta';
 import { addToCart } from '../slices/cartSlice';
 
 const ProductPage = () => {
@@ -69,6 +70,7 @@ const ProductPage = () => {
 
   return (
     <>
+      <Meta title={product.name} />
       <Link to="/" className="btn btn-light my-3">
         Go Back
       </Link>
