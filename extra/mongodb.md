@@ -74,3 +74,11 @@ mongodb+srv://khen123:<password>@cluster0.dhlrsgv.mongodb.net/?retryWrites=true&
 2. Replace <password> with real user password
 3. Save it with your choice of name and color
 4. Click on Connect
+
+---
+
+## Adding whitelist IP address
+
+1. Select the project you want to add whitelist ip
+2. Click on Network Access in left menu
+3. Click on ADD IP ADDRESS and add the ip address you want to add to whitelist
