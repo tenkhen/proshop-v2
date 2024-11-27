@@ -37,7 +37,7 @@
 
 ### Create DataBase
 
-1. Go to project and click on Database under Deployment on the left side navigation bar
+1. Go to project and click on Clusters under DATABASE on the left side navigation bar
 2. Click on Browse Collections
 3. If you have database already, you will see it. Otherwise click on Add My Own Data
 4. Give database a name and collection name (e.g. products, users etc)
